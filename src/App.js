@@ -1,70 +1,28 @@
-
-import './App.css'
-import Header from './components/Header'
-import { useState } from 'react';
-import Counter from './Counter';
-import Employee from './Employee';
-import Count from './Count';
+import React, { useState } from 'react'
+import Basics from './pages/Basics'
+import Page from './pages/Page'
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
+/* For Use Button -> Import Roter in Parent js, Import useHistory and define a const history = useHistory(), Then <button onClick='history.push('/page')'> */
+import {AppContext} from './AppContext'
+/* Context API -> useContext  Ref:- "Medium" Websited*/
 function App() {
-  const [count, setCount] = useState(0)
-  const [state, setState] = useState(false)
-
-  const data = 'Namshad'
-  const addCount = () => {
-    setCount(count + 1)
-  }
-  let obj = {
-    title: 'First Counter',
-    count,
-    place: 'safsa'
-  }
-
-  let emp = [{ name: 'namshad', age: 23 }, { name: 'Minhaj', age: 20 }, { name: 'Test', age: 18 }]
+  const [state, setstate] = useState(10)
   return (
     <div>
-      <Header data={data} />
-      <h1 style={{ color: 'white', backgroundColor: 'red' }}>HelloWorld</h1>
-      <p className='hello'> Description {data}</p>
-      <br />̥
-      {data}
-      <button onClick={addCount}>Add </button>
-      <Test />
-      <h1>Counter: {count}</h1>
-      <Counter {...obj} />
-      <Counter title='Second Counter' count={count} />
-
-
-      {/* {
-        emp.map((ob,index) => {
-          return (
-            <Employee key={index} name={ob.name} age={ob.age}/>
-          )
-        })
-      } */}
-
-      {
-        emp.map((ob, index) =>
-        (
-          <div>
-            <h1>{count}</h1>
-            <Employee key={index} {...ob} />
-          </div>
-        )
-        )
-      }
-
-      <h1 onClick={()=>setState(!state)}>Show/Hide</h1>
-      {/* { state ? <Count /> : null} */}
-      { state && <Count /> }
-
+      <Router>
+        <Link to='/'>Home</Link>
+        <Link to='/basics'>Basics</Link>
+        <Link to='/page'>Page</Link>
+      <AppContext.Provider value={{data:state}}>
+        <Route component={Basics} path='/basics'></Route>
+        <Route path='/page'>
+          <Page></Page>
+        </Route>
+        <Route render={() => <h1>Teest</h1>} path='/test1'></Route>
+        </AppContext.Provider>
+      </Router>
     </div>
-  );
-}
-
-export default App;
-
-function Test() {
-  return (
-    <h1 style={{ color: 'black', backgroundColor: 'red' }}>HelloWorld</h1>
   )
 }
+
+export default App
